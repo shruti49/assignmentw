@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
 
 	const storeData = async (value) => {
 		try {
+			//saving the token in async storage
 			await AsyncStorage.setItem("token", value);
 		} catch (e) {
 			// saving error
@@ -25,12 +26,14 @@ export const AuthProvider = ({ children }) => {
 
 	const logout = async () => {
 		setIsLoading(true);
+		//removing the token when logout
 		const res = await AsyncStorage.removeItem("token");
 		setUserToken(null);
 		setIsLoading(false);
 	};
 
 	const isLoggedIn = async () => {
+		//Fetching the token from async storage
 		const value = await AsyncStorage.getItem("token");
 		if (value !== null) {
 			// value previously stored
@@ -39,6 +42,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
+		//Checking whether the user is logged in or not
 		isLoggedIn();
 	}, []);
 
