@@ -16,19 +16,6 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const getData = async () => {
-		try {
-			const value = await AsyncStorage.getItem("token");
-			if (value !== null) {
-				// value previously stored
-				return value;
-			}
-		} catch (e) {
-			// error reading value
-			console.warn(e);
-		}
-	};
-
 	const login = () => {
 		setIsLoading(true);
 		setUserToken("shruti");
@@ -39,21 +26,20 @@ export const AuthProvider = ({ children }) => {
 	const logout = async () => {
 		setIsLoading(true);
 		const res = await AsyncStorage.removeItem("token");
-		//console.log(res);
+		setUserToken(null);
 		setIsLoading(false);
 	};
 
-	const isLoggedIn = () => {
-		setIsLoading(true);
-		const token = getData();
-		setUserToken(token);
-		setIsLoading(false);
+	const isLoggedIn = async () => {
+		const value = await AsyncStorage.getItem("token");
+		if (value !== null) {
+			// value previously stored
+			setUserToken(value);
+		}
 	};
 
 	useEffect(() => {
-		if (userToken !== "") {
-			isLoggedIn();
-		}
+		isLoggedIn();
 	}, []);
 
 	return (

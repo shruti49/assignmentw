@@ -39,7 +39,7 @@ const RegistrationScreen = ({ navigation }) => {
 	const [confirmPassword, setConfirmPassword] = useState();
 	const [confirmPasswordError, setConfirmPasswordError] = useState();
 
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState();
 
 	const [visible, setVisible] = React.useState(false);
 
@@ -79,6 +79,7 @@ const RegistrationScreen = ({ navigation }) => {
 
 		const error = validateWrapper(fieldName, fieldValue);
 		if (error) {
+			setSignUpBtnDisable(true);
 			switch (fieldName) {
 				case "firstName":
 					setFirstNameError(error);
@@ -109,12 +110,14 @@ const RegistrationScreen = ({ navigation }) => {
 					break;
 			}
 		} else {
+			setSignUpBtnDisable(false);
 			validationClear(fieldName);
 		}
 		return error;
 	};
 
 	const validationClear = (fieldName) => {
+		setSignUpBtnDisable(false);
 		switch (fieldName) {
 			case "firstName":
 				setFirstNameError("");
@@ -163,9 +166,10 @@ const RegistrationScreen = ({ navigation }) => {
 
 		if (password !== confirmPassword) {
 			setConfirmPasswordError("Password Mismatch");
+			setSignUpBtnDisable(true);
+			return;
 		}
 		setVisible(true);
-		// navigation.navigate("login");
 	};
 
 	return (
@@ -247,6 +251,8 @@ const RegistrationScreen = ({ navigation }) => {
 						onSelect={(nextDate) => setDate(nextDate)}
 						caption={birthDateError}
 						style={{ marginBottom: 16 }}
+						min={new Date(0)}
+						max={new Date()}
 						// onFocus={Keyboard.dismiss()}
 					/>
 
@@ -306,7 +312,7 @@ const RegistrationScreen = ({ navigation }) => {
 				<Card disabled={true} style={{ height: 120 }}>
 					<Text category="h6">Thankyou {firstName} for signing up</Text>
 					<View style={{ alignSelf: "flex-end", marginVertical: 16 }}>
-						<Button onPress={() => setVisible(false)}>
+						<Button onPress={() => navigation.navigate("login")}>
 							<Text>Dismiss</Text>
 						</Button>
 					</View>

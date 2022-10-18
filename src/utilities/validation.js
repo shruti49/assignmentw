@@ -63,6 +63,10 @@ const constraints = {
 		},
 	},
 	zipCode: {
+		presence: {
+			allowEmpty: false,
+			message: "^Please enter zip code",
+		},
 		length: {
 			maximum: 6,
 			message: "^Too many characters",
@@ -75,13 +79,13 @@ const constraints = {
 		},
 		length: {
 			minimum: 6,
-			message: "Must be at least 6 characters",
+			message: "must be at least 6 characters",
 		},
 	},
 	confirmPassword: {
 		presence: {
 			allowEmpty: false,
-			message: "ConfirmPassword should not be empty",
+			message: "^ConfirmPassword should not be empty",
 		},
 	},
 };
